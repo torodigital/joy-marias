@@ -13,12 +13,11 @@ use stdClass;
 
 class ClientJoy
 {
-    //private static $host = 'https://dev-mariasjoy.lead2action.com.mx';
-    private static $host = 'https://cirqjaqf83qnl2sqxmtbwexlq.pepmx.com';
-    private static $grant_type = 'client_credentials';
-    private static $client_id = 'cd02aea4-a6ad-4b80-8bc2-ac6ecab12d16';
-    private static $client_secret = 'iJubqO8Y67ATzSUAQCJlttYrGktLvhmuJy4VZbp7';
-    private static $scope = 'CXkb1mTSR9';
+    private static $host;
+    private static $grant_type;
+    private static $client_id;
+    private static $client_secret;
+    private static $scope;
 
     private static $cookies;
     private static Client $client;
@@ -31,6 +30,12 @@ class ClientJoy
 
     public static function init()
     {
+        self::$host = env('JOY_HOST');
+        self::$grant_type = env('JOY_GRANT_TYPE');
+        self::$client_id = env('JOY_CLIENT_ID');
+        self::$client_secret = env('JOY_CLIENT_SECRET');
+        self::$scope = env('JOY_SCOPE');
+
         self::$client = new Client([
             'base_uri' => self::$host,
             'headers' => [
