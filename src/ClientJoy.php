@@ -93,22 +93,22 @@ class ClientJoy
             $res = self::jsonp_decode($res->getBody());
 
             $data = new stdClass;
-            $data->data = $blocks->data->blocks;
-            $data->next_page = $blocks->data->next_page;
-            $data->prev_page = $blocks->data->prev_page;
-            $data->page = $blocks->data->pages;
+            $data->users = $res->data;
+            $data->links = self::pagination($res->links);
+            $data->meta = $data->meta;
 
-            return $data;
+            return ['data' => $data->users, 'pages' => $data->meta->last_page,
+                    'current_page' => $data->meta->current_page, 'links' => $data->links,
+                    'from' => $data->meta->from, 'to' => $data->meta->to, 'total' => 0];
 
         }catch(ServerException $se){
-            return ['data' => [], 'pages' => 0, 'next_page' => 0, 'prev_page' => 0];
+            return ['data' => [], 'pages' => 0, 'links' => [], 'next_page' => 0, 'prev_page' => 0];
         }catch(ClientException $clientException){
-            // dd(Psr7\Message::toString(($clientException->getResponse())));
-            return ['data' => [], 'pages' => 0, 'next_page' => 0, 'prev_page' => 0];
+            return ['data' => [], 'pages' => 0, 'links' => [], 'next_page' => 0, 'prev_page' => 0];
         }catch(ConnectException $ce){
-            return ['data' => [], 'pages' => 0, 'next_page' => 0, 'prev_page' => 0];
+            return ['data' => [], 'pages' => 0, 'links' => [], 'next_page' => 0, 'prev_page' => 0];
         }catch(Exception $e){
-            return ['data' => [], 'pages' => 0, 'next_page' => 0, 'prev_page' => 0];
+            return ['data' => [], 'pages' => 0, 'links' => [], 'next_page' => 0, 'prev_page' => 0];
         }
     }
 
@@ -122,10 +122,10 @@ class ClientJoy
             $res = json_decode($res->getBody());
 
             $data = new stdClass;
-            $data->data = $blocks->data->blocks;
-            $data->next_page = $blocks->data->next_page;
-            $data->prev_page = $blocks->data->prev_page;
-            $data->page = $blocks->data->pages;
+            $data->data = $res->data->blocks;
+            $data->next_page = $res->data->next_page;
+            $data->prev_page = $res->data->prev_page;
+            $data->page = $res->data->pages;
 
             return $data;
 
