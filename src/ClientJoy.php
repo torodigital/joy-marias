@@ -91,11 +91,10 @@ class ClientJoy
             ]);
 
             $res = self::jsonp_decode($res->getBody());
-
             $data = new stdClass;
             $data->users = $res->data;
-            $data->links = self::pagination($res->links);
-            $data->meta = $data->meta;
+            $data->links = self::pagination($res->meta->links);
+            $data->meta = $res->meta;
 
             return ['data' => $data->users, 'pages' => $data->meta->last_page,
                     'current_page' => $data->meta->current_page, 'links' => $data->links,
